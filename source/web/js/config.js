@@ -13,7 +13,7 @@ TT.config = {
   schoolName: '循人中学',
   schoolNameEn: 'Tsun Jin High School',
   /** GitHub 项目网址（留空则隐藏页脚的 GitHub 按钮） */
-  githubUrl: 'https://github.com/your-username/TJHS-School-Teacher-TimeTable',
+  githubUrl: 'https://github.com/TJHS-Co-Curricular/School-Teacher-TimeTable',
   /** 依序尝试读取的课表来源（source.html 由 Teacher-TimeTable.exe 提供） */
   sources: ['source.html', '班级课表.html'],
   /** 心跳间隔（毫秒）：告诉 exe 页面仍开着 */
