@@ -1,7 +1,7 @@
 /**
  * 循人课表 — 启动
- * 1. 由 exe 提供的网页服务读取「班级课表.html」（每次打开都重新读取）
- * 2. 直接双击 index.html 打开时，改为让使用者选择文件
+ * 1. 由 exe 提供的网页服务读取「班级课表.html」和（可选的）「场地课表_English.html」，每次打开都重新读取
+ * 2. 直接双击 index.html 打开时，改为让使用者选择文件（可一次选两个）
  * 3. 定时心跳，让 exe 知道页面仍开着
  */
 (function (TT) {
@@ -9,49 +9,65 @@
 
   const { config, parser, app, util } = TT;
   const { esc, $ } = util;
+  const LOCAL = new Error('local');
 
-  async function autoLoad() {
-    let lastErr = null;
-    if (location.protocol.startsWith('http')) {
-      for (const src of config.sources) {
-        try {
-          const r = await fetch(src + '?t=' + Date.now(), { cache: 'no-store' });
-          if (!r.ok) {
-            lastErr = new Error(`找不到「${decodeURIComponent(src)}」（${r.status}）`);
-            continue;
-          }
-          return parser.parseTimetable(parser.decodeHtml(await r.arrayBuffer()));
-        } catch (e) {
-          lastErr = e;
+  /** 依序尝试 urls，回传第一个读得到的解析结果；全部失败则抛出最后的错误 */
+  async function fetchFirst(urls) {
+    let lastErr = LOCAL;
+    if (!location.protocol.startsWith('http')) throw lastErr;
+    for (const src of urls) {
+      try {
+        const r = await fetch(src + '?t=' + Date.now(), { cache: 'no-store' });
+        if (!r.ok) {
+          lastErr = new Error(`找不到「${decodeURIComponent(src)}」（${r.status}）`);
+          continue;
         }
+        return parser.parseTimetable(parser.decodeHtml(await r.arrayBuffer()));
+      } catch (e) {
+        lastErr = e;
       }
     }
-    throw lastErr || new Error('local');
+    throw lastErr;
+  }
+
+  async function autoLoad() {
+    const [cls, eng] = await Promise.allSettled([fetchFirst(config.sources.class), fetchFirst(config.sources.english)]);
+    if (cls.status === 'rejected') throw cls.reason;
+    return { data: cls.value, english: eng.status === 'fulfilled' && eng.value.kind === 'venue' ? eng.value : null };
+  }
+
+  /** 把使用者选的文件按内容分成 班级课表 / 英文场地课表 */
+  async function readPicked(files) {
+    const out = { data: null, english: null };
+    for (const f of files) {
+      const parsed = parser.parseTimetable(parser.decodeHtml(await f.arrayBuffer()));
+      if (parsed.kind === 'venue') out.english = parsed;
+      else out.data = parsed;
+    }
+    if (!out.data) throw new Error('没有选到「班级课表.html」。英文的「场地课表_English.html」要和它一起选。');
+    return out;
   }
 
   function showPicker(err) {
-    const msg = err && err.message !== 'local' ? `<p class="err">${esc(err.message)}</p>` : '';
+    const msg = err && err !== LOCAL && err.message !== 'local' ? `<p class="err">${esc(err.message)}</p>` : '';
     $('out').innerHTML = `<div class="load">
-      <h1>读取班级课表</h1>
-      <p>请把「班级课表.html」放在 Teacher-TimeTable.exe 旁边后重新打开。也可以直接在这里选择文件。</p>
+      <h1>读取课表</h1>
+      <p>请把「班级课表.html」（和「场地课表_English.html」）放在 Teacher-TimeTable.exe 旁边后重新打开。也可以直接在这里选择文件。</p>
       ${msg}
       <label class="drop" id="drop">
-        <input type="file" id="file" accept=".html,.htm">
-        <b>选择或拖入「班级课表.html」</b>
-        <span>从 eSchool 列印页面「另存为」的 HTML 文件</span>
+        <input type="file" id="file" accept=".html,.htm" multiple>
+        <b>选择或拖入课表文件</b>
+        <span>「班级课表.html」必选；「场地课表_English.html」可一起选</span>
       </label>
     </div>`;
     const drop = $('drop');
-    const take = (f) =>
-      f &&
-      f.arrayBuffer().then((b) => {
-        try {
-          app.start(parser.parseTimetable(parser.decodeHtml(b)));
-        } catch (e) {
-          showPicker(e);
-        }
-      });
-    $('file').onchange = (e) => take(e.target.files[0]);
+    const take = (files) =>
+      files &&
+      files.length &&
+      readPicked([...files])
+        .then(launch)
+        .catch(showPicker);
+    $('file').onchange = (e) => take(e.target.files);
     drop.ondragover = (e) => {
       e.preventDefault();
       drop.classList.add('over');
@@ -60,8 +76,12 @@
     drop.ondrop = (e) => {
       e.preventDefault();
       drop.classList.remove('over');
-      take(e.dataTransfer.files[0]);
+      take(e.dataTransfer.files);
     };
+  }
+
+  function launch({ data, english }) {
+    app.start(data, english);
   }
 
   function heartbeat() {
@@ -83,7 +103,7 @@
   }
 
   initChrome();
-  $('out').innerHTML = '<div class="load"><div class="spin"></div><p>正在读取「班级课表.html」…</p></div>';
-  autoLoad().then(app.start).catch(showPicker);
+  $('out').innerHTML = '<div class="load"><div class="spin"></div><p>正在读取课表…</p></div>';
+  autoLoad().then(launch).catch(showPicker);
   heartbeat();
 })(window.TT);

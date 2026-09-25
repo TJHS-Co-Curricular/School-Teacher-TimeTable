@@ -1,9 +1,14 @@
 # eSchool 导出的课表资料（含老师名字，不上传）
 班级课表.html
 班级课表_files/
+场地课表_English.html
+场地课表_English_files/
 
 # 编译产物（请用 GitHub Releases 发布）
 *.exe
+
+# 本机设置
+Teacher-TimeTable.ini
 
 # 系统 / 编辑器
 .DS_Store

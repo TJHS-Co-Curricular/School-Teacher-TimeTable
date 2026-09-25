@@ -530,6 +530,12 @@ main {
   font-size: 13px;
   display: block;
 }
+.tt td.on .x {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+  opacity: 0.7;
+}
 .tt td.on .w {
   display: block;
   margin-top: 2px;

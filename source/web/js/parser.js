@@ -1,6 +1,10 @@
 /**
- * 循人课表 — 解析 eSchool「班级课表」列印页面（GBK 编码的 HTML）
- * 输出：{ periods, recess, times, pre, classes, printed, sem, note }
+ * 循人课表 — 解析 eSchool 列印页面（GBK 编码的 HTML）
+ * 支持两种：
+ *   班级课表（教务处系统，每页「班级：…」）        kind = 'class'
+ *   场地课表_English（英文系统，每页「场地：…」）  kind = 'venue'
+ * 输出：{ kind, periods, recess, times, pre, classes, printed, sem, note }
+ *   classes[i] = { n: 班级/场地名, hr: 第二行资料（班导师 / 课时总数）, g: 每天每节的文字, p: 统计表 }
  */
 (function (TT) {
   'use strict';
@@ -31,8 +35,9 @@
   function parseTimetable(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const areas = [...doc.querySelectorAll('div.printarea')];
-    if (!areas.length)
-      throw new Error('文件里找不到班级课表（没有 printarea）。请确认是从 eSchool「班级课表」列印页面另存的 HTML。');
+    if (!areas.length) throw new Error('文件里找不到课表（没有 printarea）。请确认是从 eSchool 列印页面另存的 HTML。');
+    const firstLabel = (areas[0].querySelector('.print-tt__info')?.textContent || '').split(/[：:]/)[0].trim();
+    const kind = firstLabel === '场地' ? 'venue' : 'class';
     const sem = (html.match(/[?&]sem=(\d+)/) || [])[1];
     let periods,
       recess,
@@ -96,9 +101,9 @@
           .filter((tr) => tr.querySelector('td'))
           .map((tr) => [...tr.querySelectorAll('td')].map((td) => td.textContent.trim())),
       );
-      return { n: val(infos[0]) || '班级' + (idx + 1), hr: val(infos[1]), g: grid, p };
+      return { n: val(infos[0]) || firstLabel + (idx + 1), hr: val(infos[1]), g: grid, p };
     });
-    return { periods, recess, times, pre, classes, printed, sem, note };
+    return { kind, periods, recess, times, pre, classes, printed, sem, note };
   }
 
   TT.parser = { decodeHtml, parseTimetable };
