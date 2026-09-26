@@ -1,14 +1,21 @@
-# eSchool 导出的课表资料（含老师名字，不上传）
-班级课表.html
-班级课表_files/
-场地课表_English.html
-场地课表_English_files/
+# 打包输出（完整的运行时文件夹，含课表资料与日志）
+/dist/
 
-# 编译产物（请用 GitHub Releases 发布）
-*.exe
+# eSchool 导出的课表（含老师名字，不上传）
+班级课表*.html
+班级课表*_files/
+场地课表*.html
+场地课表*_files/
+/data/
 
-# 本机设置
+# 运行时产生的文件
+/logs/
+*.log
+*.bak
 Teacher-TimeTable.ini
+*.exe
+# windres 的中间文件（build.sh 会自动删除）
+/build/windows/app.rc
 
 # 系统 / 编辑器
 .DS_Store

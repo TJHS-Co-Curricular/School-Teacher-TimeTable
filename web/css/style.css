@@ -920,6 +920,11 @@ table.sum tr.grp td {
   color: var(--ink-2);
   font-weight: 600;
 }
+.foot .ver {
+  margin-left: 6px;
+  font-family: var(--mono);
+  opacity: 0.8;
+}
 .foot a {
   display: inline-flex;
   align-items: center;

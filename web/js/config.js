@@ -1,10 +1,15 @@
 /**
- * 循人课表 — 设置
- * 需要修改学校名称、GitHub 网址等，只改这个文件即可。
+ * 循人课表 — 网页默认设置
+ *
+ * 由 Teacher-TimeTable.exe 打开时，会再读取运行时文件夹的 config/app.json 覆盖这里的值
+ * （学校名称、GitHub 网址等请改 config/app.json，不用重新打包）。
+ * 直接双击 index.html 打开时，只会用这里的默认值。
  */
 window.TT = window.TT || {};
 
 TT.config = {
+  /** 版本号（由 exe 的 /config.json 提供） */
+  version: '',
   /** 浏览器分页标题 */
   appName: '循人课表',
   /** 顶栏标题 */

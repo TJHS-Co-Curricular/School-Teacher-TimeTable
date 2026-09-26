@@ -2,8 +2,8 @@
 1 ICON "app.ico"
 1 24 "app.manifest"
 1 VERSIONINFO
-FILEVERSION 1,0,0,0
-PRODUCTVERSION 1,0,0,0
+FILEVERSION @VERSION_COMMA@
+PRODUCTVERSION @VERSION_COMMA@
 FILEOS 0x40004
 FILETYPE 0x1
 BEGIN
@@ -11,10 +11,11 @@ BEGIN
   BEGIN
     BLOCK "080404B0"
     BEGIN
+      VALUE "CompanyName", "循人中学 Tsun Jin High School"
       VALUE "FileDescription", "循人中学 教师与班级课表"
       VALUE "ProductName", "循人课表"
-      VALUE "FileVersion", "1.0.0"
-      VALUE "ProductVersion", "1.0.0"
+      VALUE "FileVersion", "@VERSION@"
+      VALUE "ProductVersion", "@VERSION@"
       VALUE "OriginalFilename", "Teacher-TimeTable.exe"
     END
   END

@@ -52,7 +52,7 @@
     const msg = err && err !== LOCAL && err.message !== 'local' ? `<p class="err">${esc(err.message)}</p>` : '';
     $('out').innerHTML = `<div class="load">
       <h1>读取课表</h1>
-      <p>请把「班级课表.html」（和「场地课表_English.html」）放在 Teacher-TimeTable.exe 旁边后重新打开。也可以直接在这里选择文件。</p>
+      <p>请把「班级课表.html」（和「场地课表_English.html」）放进 Teacher-TimeTable.exe 旁边的 data 文件夹，再按 F5。也可以直接在这里选择文件。</p>
       ${msg}
       <label class="drop" id="drop">
         <input type="file" id="file" accept=".html,.htm" multiple>
@@ -91,19 +91,30 @@
     setInterval(ping, config.heartbeatMs);
   }
 
+  /** 由 exe 打开时，读取 config/app.json（经 /config.json）覆盖默认设置 */
+  async function loadRemoteConfig() {
+    if (!location.protocol.startsWith('http')) return;
+    try {
+      const r = await fetch('config.json?t=' + Date.now(), { cache: 'no-store' });
+      if (r.ok) Object.assign(config, await r.json());
+    } catch (e) {
+      /* 读不到就用默认值 */
+    }
+  }
+
   function initChrome() {
     document.title = config.appName;
     $('brandTitle').textContent = config.headerTitle;
     $('year').textContent = new Date().getFullYear();
     $('schoolName').textContent = config.schoolName;
     $('schoolNameEn').textContent = config.schoolNameEn;
+    $('version').textContent = config.version ? 'v' + config.version : '';
     const gh = $('gh');
     if (config.githubUrl) gh.href = config.githubUrl;
     else gh.hidden = true;
   }
 
-  initChrome();
   $('out').innerHTML = '<div class="load"><div class="spin"></div><p>正在读取课表…</p></div>';
-  autoLoad().then(launch).catch(showPicker);
+  loadRemoteConfig().then(initChrome).then(autoLoad).then(launch).catch(showPicker);
   heartbeat();
 })(window.TT);
