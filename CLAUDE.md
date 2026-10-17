@@ -63,7 +63,7 @@ dist/                        打包输出（不进 git）
 Teacher-TimeTable.exe
 firewall-allow.bat
 config/   settings.ini（程序）、app.json（网页）——不存在时由 exe 写出默认值
-data/     班级课表.html（必需）、场地课表_English.html（可选）
+data/     班级课表.html（必需）、场地课表_English.html 或 场地课表.html（可选）
 logs/     YYYY-MM-DD.log
 ```
 
@@ -88,10 +88,10 @@ logs/     YYYY-MM-DD.log
 
 ### eSchool 文件格式（GBK）
 
-| 文件                    | 网址标记（文件开头 `saved from url`） | 每页标签                                   |
-| ----------------------- | ------------------------------------- | ------------------------------------------ |
-| `班级课表.html`         | `activity/csche_prt.php`              | `班级：初一A`、`班导师：…`、`列印日期：…`  |
-| `场地课表_English.html` | `schedule_eng/psche_prt.php`          | `场地：E001`、`课时总数：…`、`列印日期：…` |
+| 文件                                          | 网址标记（文件开头 `saved from url`） | 每页标签                                   |
+| --------------------------------------------- | ------------------------------------- | ------------------------------------------ |
+| `班级课表.html`                               | `activity/csche_prt.php`              | `班级：初一A`、`班导师：…`、`列印日期：…`  |
+| `场地课表_English.html`（或 `场地课表.html`） | `schedule_eng/psche_prt.php`          | `场地：E001`、`课时总数：…`、`列印日期：…` |
 
 - 每页一个 `div.printarea`；标题在 `.print-tt__info`；课表在 `.print-tt__timetable-box table`。
 - 第 1 行节次 1–11（`6*` 有特别安排，说明在 `.print-tt__rmk-box`），第 2 行时间；星期一至六每天 11 节。
@@ -99,6 +99,8 @@ logs/     YYYY-MM-DD.log
 - 早自习 / 班导师时间 / 晨读是 `rowspan` 格子，解析时跳过。
 - 班级课表格子：`科目<br>老师`；英文场地格子：`英文组<br>课型<br>老师`（如 `B11A / GR / 陈志祥`）。
 - `.print-tt__plan` 是每班「班级/教师 · 节数 · 科目」统计表。
+- 班级课表除了 59 个真正的班级，还会导出教学分组页（如 `跨阅(1)`、`S3C小专题1`、`ART1`、`MAA`；2026-09-26 的资料共 106 页）。**使用者要求照常显示在「按班级」**，不要过滤。
+- 同名的页（如两页「力学」）由 `parser.js` 依序改名为 `力学（2）`，避免按名字查找时互相覆盖。
 
 ### 统计规则
 
@@ -180,7 +182,7 @@ curl http://127.0.0.1:17380/__version
 curl http://127.0.0.1:17380/config.json
 ```
 
-- 测试：**目前没有自动化测试**。改动后至少手动验证：三个视图、英文合并（老师约 208 位、E1–E12 不出现）、改 settings.ini 重开会接手、F5 读到新课表。新增测试时课表样本必须**匿名化**。
+- 测试：**目前没有自动化测试**。改动后至少手动验证：三个视图、英文合并（以 2026-09-26 的课表：老师 212 位、英文组 118 个全部对应、E1–E12 不出现）、改 settings.ini 重开会接手、F5 读到新课表。新增测试时课表样本必须**匿名化**。
 - 发布：改 `VERSION` → 写 `CHANGELOG.md` → 打包 → commit → `git tag vX.Y.Z` → push → GitHub Release 上传 `dist/Teacher-TimeTable` 压缩档（压缩前清空 `data/`、`logs/`）。
 - 改了版本号想更新 exe「属性」里的版本：在 Linux/WSL 跑 `scripts/build.sh`（需要 `x86_64-w64-mingw32-windres`），提交新的 `.syso`。
 
