@@ -28,11 +28,11 @@ var (
 		Names:  []string{"班级课表.html", "班级课表.htm", "班級課表.html"},
 		Marker: "csche_prt.php",
 	}
-	// English 是英文系统的「场地课表_English」（可选）。
+	// English 是英文系统的「场地课表_English」（可选；文件名也可以是 场地课表.html）。
 	English = Kind{
-		Label:  "场地课表_English.html",
+		Label:  "场地课表_English.html（或 场地课表.html）",
 		Route:  "/source_en.html",
-		Names:  []string{"场地课表_English.html", "场地课表_english.html", "場地課表_English.html"},
+		Names:  []string{"场地课表_English.html", "场地课表_english.html", "場地課表_English.html", "场地课表.html", "場地課表.html"},
 		Marker: "schedule_eng/psche_prt.php",
 	}
 )

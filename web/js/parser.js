@@ -103,6 +103,12 @@
       );
       return { n: val(infos[0]) || firstLabel + (idx + 1), hr: val(infos[1]), g: grid, p };
     });
+    // 同名的页（如两页「力学」）依序改成「力学（2）」，否则按名字查找时会互相覆盖
+    const seen = {};
+    classes.forEach((c) => {
+      seen[c.n] = (seen[c.n] || 0) + 1;
+      if (seen[c.n] > 1) c.n = `${c.n}（${seen[c.n]}）`;
+    });
     return { kind, periods, recess, times, pre, classes, printed, sem, note };
   }
 

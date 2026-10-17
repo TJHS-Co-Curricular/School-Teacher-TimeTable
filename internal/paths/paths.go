@@ -3,7 +3,7 @@
 //	Teacher-TimeTable/
 //	├── Teacher-TimeTable.exe
 //	├── config/   settings.ini、app.json（第一次运行自动建立）
-//	├── data/     班级课表.html、场地课表_English.html
+//	├── data/     班级课表.html、场地课表_English.html（或 场地课表.html）
 //	└── logs/     每天一个日志文件
 //
 // 开发时可以用环境变量 TEACHER_TIMETABLE_HOME 指定运行时文件夹。
@@ -48,7 +48,7 @@ func (l Layout) AppFile() string { return filepath.Join(l.Config, "app.json") }
 
 const dataReadme = "把从 eSchool「另存为」的课表文件放在这个文件夹：\r\n\r\n" +
 	"  班级课表.html            （必需，教务处系统的班级课表）\r\n" +
-	"  场地课表_English.html    （可选，英文系统的场地课表）\r\n\r\n" +
+	"  场地课表_English.html    （可选，英文系统的场地课表；也可以叫 场地课表.html）\r\n\r\n" +
 	"同名的 _files 文件夹可以一起放，也可以不放。\r\n" +
 	"替换文件后，在浏览器按 F5 就会看到新课表。\r\n"
 

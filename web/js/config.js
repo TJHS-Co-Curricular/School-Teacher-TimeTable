@@ -24,7 +24,7 @@ TT.config = {
     /** 教务处「班级课表」（必需） */
     class: ['source.html', '班级课表.html'],
     /** 英文系统「场地课表_English」（可选，有就合并） */
-    english: ['source_en.html', '场地课表_English.html'],
+    english: ['source_en.html', '场地课表_English.html', '场地课表.html'],
   },
   /** 心跳间隔（毫秒）：告诉 exe 页面仍开着 */
   heartbeatMs: 20000,

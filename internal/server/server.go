@@ -4,7 +4,7 @@
 //
 //	/                 网页（index.html、css/、js/、favicon.ico）
 //	/source.html      班级课表（data/班级课表.html）
-//	/source_en.html   英文场地课表（data/场地课表_English.html）
+//	/source_en.html   英文场地课表（data/场地课表_English.html 或 场地课表.html）
 //	/config.json      网页显示设置（config/app.json + 版本号）
 //	/__ping           心跳；也用来辨认「正在运行的是不是本程序」
 //	/__cfg            正在运行的设置（给新启动的程序比对）

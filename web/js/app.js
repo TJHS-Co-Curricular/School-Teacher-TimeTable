@@ -226,7 +226,7 @@
       const people = cn.length + en.length;
       const enNote = hasEN
         ? '已合并英文系统的英文老师。'
-        : '未载入「场地课表_English.html」，英文课以 E1–E12 代号显示。';
+        : '未载入英文「场地课表_English.html」（或「场地课表.html」），英文课以 E1–E12 代号显示。';
       return `<div class="pagehead"><div><h1>老师</h1><p>${people} 位老师，节数为星期一至星期五合计。${enNote}点击查看个人课表。</p></div></div>
     ${list.length ? '' : `<div class="empty">找不到「${esc(q)}」</div>`}
     ${sec('华文名 · 按拼音', cn)}${sec('英文 / 马来文名', en)}${sec('分组 / 代号', gp)}`;

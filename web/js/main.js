@@ -1,6 +1,6 @@
 /**
  * 循人课表 — 启动
- * 1. 由 exe 提供的网页服务读取「班级课表.html」和（可选的）「场地课表_English.html」，每次打开都重新读取
+ * 1. 由 exe 提供的网页服务读取「班级课表.html」和（可选的）「场地课表_English.html」或「场地课表.html」，每次打开都重新读取
  * 2. 直接双击 index.html 打开时，改为让使用者选择文件（可一次选两个）
  * 3. 定时心跳，让 exe 知道页面仍开着
  */
@@ -44,7 +44,10 @@
       if (parsed.kind === 'venue') out.english = parsed;
       else out.data = parsed;
     }
-    if (!out.data) throw new Error('没有选到「班级课表.html」。英文的「场地课表_English.html」要和它一起选。');
+    if (!out.data)
+      throw new Error(
+        '没有选到「班级课表.html」。英文的「场地课表_English.html」（或「场地课表.html」）要和它一起选。',
+      );
     return out;
   }
 
@@ -52,12 +55,12 @@
     const msg = err && err !== LOCAL && err.message !== 'local' ? `<p class="err">${esc(err.message)}</p>` : '';
     $('out').innerHTML = `<div class="load">
       <h1>读取课表</h1>
-      <p>请把「班级课表.html」（和「场地课表_English.html」）放进 Teacher-TimeTable.exe 旁边的 data 文件夹，再按 F5。也可以直接在这里选择文件。</p>
+      <p>请把「班级课表.html」（和「场地课表_English.html」或「场地课表.html」）放进 Teacher-TimeTable.exe 旁边的 data 文件夹，再按 F5。也可以直接在这里选择文件。</p>
       ${msg}
       <label class="drop" id="drop">
         <input type="file" id="file" accept=".html,.htm" multiple>
         <b>选择或拖入课表文件</b>
-        <span>「班级课表.html」必选；「场地课表_English.html」可一起选</span>
+        <span>「班级课表.html」必选；英文「场地课表_English.html」或「场地课表.html」可一起选</span>
       </label>
     </div>`;
     const drop = $('drop');

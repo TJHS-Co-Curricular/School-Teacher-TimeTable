@@ -19,12 +19,12 @@ Teacher-TimeTable/
 │   └── app.json            网页显示：学校名称、GitHub 网址
 ├── data/                   课表文件放这里
 │   ├── 班级课表.html        （必需）
-│   └── 场地课表_English.html（可选）
+│   └── 场地课表_English.html（可选；也可以叫 场地课表.html）
 └── logs/                   日志，每天一个文件：2026-09-26.log
 ```
 
 1. 在 eSchool 打开「班级课表」列印页面，浏览器「另存为」→ `data/班级课表.html`。
-2. （可选）在英文系统打开「场地课表」列印页面，「另存为」→ `data/场地课表_English.html`。
+2. （可选）在英文系统打开「场地课表」列印页面，「另存为」→ `data/场地课表_English.html`（文件名也可以是 `场地课表.html`）。
 3. 双击 `Teacher-TimeTable.exe`，浏览器会自动打开课表。
 4. 更新课表：覆盖 `data/` 里的文件，在浏览器按 F5。
 
@@ -94,7 +94,7 @@ level = info         ; debug / info / warn
 - **按班级**：英文格子显示「N 组分班上课」，页面下方列出所有英文组、老师和课室。
 - **节数总表**：英文老师的节数一并统计；同时在两个系统都有课的老师会自动合并。
 
-没有 `场地课表_English.html` 时，一切照旧，英文课以 E1–E12 代号显示。
+没有 `场地课表_English.html`（或 `场地课表.html`）时，一切照旧，英文课以 E1–E12 代号显示。
 
 ## 项目结构
 
@@ -157,4 +157,4 @@ TEACHER_TIMETABLE_HOME=dist/Teacher-TimeTable go run ./cmd/teacher-timetable
 
 ## 隐私
 
-`班级课表.html`、`场地课表_English.html` 含老师名字；`data/`、`dist/`、`logs/` 已列入 `.gitignore`，不会上传到 GitHub。
+`班级课表.html`、`场地课表_English.html`（`场地课表.html`）含老师名字；`data/`、`dist/`、`logs/` 已列入 `.gitignore`，不会上传到 GitHub。

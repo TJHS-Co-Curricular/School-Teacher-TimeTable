@@ -3,7 +3,7 @@
 // 启动流程：
 //  1. 准备运行时文件夹（config/、data/、logs/），旧版设置自动搬到 config/
 //  2. 读取 config/settings.ini，开始写日志
-//  3. 检查课表文件（data/班级课表.html、data/场地课表_English.html）
+//  3. 检查课表文件（data/班级课表.html、data/场地课表_English.html 或 场地课表.html）
 //  4. 已有本程序在运行：设置相同就直接打开页面；不同就请它结束再接手
 //  5. 启动网页服务、打开浏览器
 //  6. lan=true 一直运行；lan=false 页面全部关闭约 3 分钟后自动结束
