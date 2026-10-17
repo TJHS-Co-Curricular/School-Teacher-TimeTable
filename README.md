@@ -119,7 +119,9 @@ level = info         ; debug / info / warn
 ├── scripts/                   build.bat · build.sh · firewall-allow.bat · windres-pp.sh
 ├── build.bat                  快捷方式 → scripts/build.bat
 ├── VERSION                    版本号（唯一来源）
-└── CHANGELOG.md
+├── CHANGELOG.md
+├── CLAUDE.md                  给 Claude Code 的长期项目规范
+└── HANDOFF.md                 2026-10 从 Cowork 转到 Claude Code 的交接文档（一次性）
 ```
 
 ## 开发
