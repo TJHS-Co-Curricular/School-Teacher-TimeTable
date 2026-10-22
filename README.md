@@ -121,7 +121,7 @@ level = info         ; debug / info / warn
 ├── VERSION                    版本号（唯一来源）
 ├── CHANGELOG.md
 ├── CLAUDE.md                  给 Claude Code 的长期项目规范
-└── HANDOFF.md                 2026-10 从 Cowork 转到 Claude Code 的交接文档（一次性）
+└── docs/archive/HANDOFF.md    2026-10 从 Cowork 转到 Claude Code 的交接文档（已归档）
 ```
 
 ## 开发

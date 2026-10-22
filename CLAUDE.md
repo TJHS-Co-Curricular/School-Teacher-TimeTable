@@ -1,7 +1,7 @@
 # CLAUDE.md — 循人课表（TJHS School Teacher TimeTable）
 
 > Claude Code 每次都会读这份文件。改了结构、规范、命令或约束时，同步更新这里。
-> 一次性的交接资讯在 `HANDOFF.md`；版本记录在 `CHANGELOG.md`；当前版本见 `VERSION`。
+> 一次性的交接资讯已归档在 `docs/archive/HANDOFF.md`；版本记录在 `CHANGELOG.md`；当前版本见 `VERSION`。
 > 仓库：https://github.com/TJHS-Co-Curricular/School-Teacher-TimeTable
 
 ## 项目一句话
