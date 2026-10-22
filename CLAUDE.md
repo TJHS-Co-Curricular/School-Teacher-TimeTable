@@ -1,18 +1,13 @@
 # CLAUDE.md — 循人课表（TJHS School Teacher TimeTable）
 
-> Claude Code 每次都会读这份文件。改了结构、规范、命令或约束时，同步更新这里。
+> 通用规范在全局规则（`~/.claude/rules/zhijie-standard/`），这里**只写本项目特有、或和全局不同的内容**。
+> 和全局不同的地方写在「本项目例外」。改了结构、命令或约束时，同步更新这里。
 > 一次性的交接资讯已归档在 `docs/archive/HANDOFF.md`；版本记录在 `CHANGELOG.md`；当前版本见 `VERSION`。
 > 仓库：https://github.com/TJHS-Co-Curricular/School-Teacher-TimeTable
 
 ## 项目一句话
 
-把循人中学 eSchool 导出的「班级课表」（＋英文系统「场地课表\_English」）整合成 **按老师 / 按班级 / 老师节数总表** 的网页，打包成免安装的 Windows exe，可在校内局域网分享。维护者：ChongZhiJie；使用者：学校老师与行政同事。
-
-## 沟通要求
-
-- **一律使用简体中文**：回复、界面文字、代码注解、日志讯息、文档。
-- 说明要讲清楚「使用者自己需要做什么」。
-- 做完重要改动：更新 `CHANGELOG.md`，结构或规范有变就更新本文件。
+把循人中学 eSchool 导出的「班级课表」（＋英文系统「场地课表\_English」）整合成 **按老师 / 按班级 / 老师节数总表** 的网页，打包成免安装的 Windows exe，可在校内局域网分享。
 
 ---
 
@@ -28,7 +23,6 @@
 | exe 资源 | mingw-w64 `windres` 生成 `.syso`（只在 Linux/WSL；可选）                                      |
 | 格式化   | `gofmt`；Prettier 3（`.prettierrc.json`：printWidth 120、singleQuote、trailingComma all、LF） |
 | Module   | `github.com/TJHS-Co-Curricular/School-Teacher-TimeTable`                                      |
-| 硬件     | 无特殊硬件                                                                                    |
 
 ## 2. 目录结构
 
@@ -53,6 +47,7 @@ web/                         网页 + embed.go（打包进 exe）
 build/windows/               app.ico、app.manifest、app.rc.in（@VERSION@ 模板）
 scripts/                     build.bat、build.sh、windres-pp.sh、firewall-allow.bat
 build.bat                    快捷方式 → scripts\build.bat
+docs/archive/                一次性交接文件（已归档）
 VERSION  CHANGELOG.md  README.md  CLAUDE.md
 dist/                        打包输出（不进 git）
 ```
@@ -121,44 +116,27 @@ logs/     YYYY-MM-DD.log
 - `T[老师]`：`{ slots: { 'd-p': [{ s, c, x }] }, pair: { '班级\u0001科目': n }, day[5], total, subj[], cls[], eg[], group, homeroom[] }`
 - `EG[英文组]`：`{ code, rooms, teachers, comps, slots, classes }`；`EBLOCK[班级]` = 英文组代号数组
 
-## 4. 编码规范与命名约定
+## 4. 编码约定
 
 ### Go
 
-- 每个功能一个 `internal/<功能>/` 包，包名小写单字；`main.go` 只做组装，不放业务逻辑。
-- 注解、错误讯息、日志用简体中文；错误用 `fmt.Errorf("…：%w", err)` 包装。
-- 日志一律经 `logx`：`Infof`（窗口+文件）、`Warnf`（⚠）、`Errorf`（✖）、`Filef`（只写文件）、`Debugf`（只写文件，level=debug）、`Say`（只印窗口的排版文字）。
-- 不加第三方依赖；需要时先问使用者。
-- 平台相关代码放 `internal/platform`，用 `_windows.go` / `//go:build !windows` 区分。
-- 提交前：`gofmt -w .`、`go vet ./...`、`GOOS=windows go vet ./...`。
+- 日志经 `logx`：`Infof`（窗口+文件）、`Warnf`（⚠）、`Errorf`（✖）、`Filef`（只写文件）、`Debugf`（只写文件，level=debug）、`Say`（只印窗口的排版文字）。
 
 ### JavaScript
 
-- 每个文件是 IIFE：`(function (TT) { 'use strict'; … TT.xxx = {…}; })((window.TT = window.TT || {}));`
-- 共用命名空间 `window.TT`：`TT.config`、`TT.util`、`TT.parser`、`TT.app`。
-- **不用 ES modules**（`file://` 下会被挡），不用框架。
-- 用模板字串产生 HTML，**所有资料都要经过 `esc()`**。
-- 变量 camelCase；常量大写（`WEEKDAYS`、`GROUP_RE`）；中文排序用 `zh()`。
+- 共用命名空间 `window.TT`：`TT.config`、`TT.util`、`TT.parser`、`TT.app`；中文排序用 `zh()`。
 
 ### CSS
 
-- 颜色与尺寸用 `:root` 变量；深色模式在 `@media (prefers-color-scheme: dark)` 与 `[data-theme="dark"]` 重新定义变量。
 - 科目颜色用 `.k-<类别>`（`k-cn k-en k-bm k-ma k-sc k-hi k-bz k-ict k-art k-pe k-gd k-prj k-oth`）设定 `--h` 色相；活动类用 `.act`。
 - 类名简短、按组件命名：`.tcard`（老师卡）、`.ccard`（班级卡）、`.dhead`（详情头）、`.tt`（课表）、`.prow`（统计行）、`.sum`（总表）。
 - 手机（≤760px）课表改为按天列表 `.days`；打印 A4 横向，隐藏 `.top .dnav .noprint`。
 
 ### 网页设计规范（使用者确认过）
 
-- 简体中文；浅灰绿底 `#f3f5f2`、白卡片、主色深绿 `#1f5c47`；系统字体（不连外网）。
-- 首页是**按钮卡片，不用下拉列表**；老师卡片显示总节数 + 星期一至五小柱状图。
-- 时间 24 小时制；休息时段用虚线分隔。
+- 浅灰绿底 `#f3f5f2`、白卡片、主色深绿 `#1f5c47`。
+- 老师卡片显示总节数 + 星期一至五小柱状图；休息时段用虚线分隔。
 - 页脚：© 年份 学校名 · 版权所有 · 版本号 · GitHub 按钮。
-
-### 其他文件
-
-- `.bat`：CRLF、开头 `chcp 65001 >nul`；其余文件 LF、UTF-8（见 `.gitattributes`、`.editorconfig`）。
-- 设定档（ini / json）**只放 `config/`**。
-- `.rc` 模板不能写 `//` 注解（windres 直通预处理器不会去掉）。
 
 ## 5. 常用命令
 
@@ -182,21 +160,39 @@ curl http://127.0.0.1:17380/__version
 curl http://127.0.0.1:17380/config.json
 ```
 
-- 测试：**目前没有自动化测试**。改动后至少手动验证：三个视图、英文合并（以 2026-09-26 的课表：老师 212 位、英文组 118 个全部对应、E1–E12 不出现）、改 settings.ini 重开会接手、F5 读到新课表。新增测试时课表样本必须**匿名化**。
-- 发布：改 `VERSION` → 写 `CHANGELOG.md` → 打包 → commit → `git tag vX.Y.Z` → push → GitHub Release 上传 `dist/Teacher-TimeTable` 压缩档（压缩前清空 `data/`、`logs/`）。
+- 测试：**目前没有自动化测试**。改动后至少手动验证：三个视图、英文合并（以 2026-09-26 的课表：老师 212 位、英文组 118 个全部对应、E1–E12 不出现）、改 settings.ini 重开会接手、F5 读到新课表。
+- 发布：GitHub Release 上传 `dist/Teacher-TimeTable` 压缩档（压缩前清空 `data/`、`logs/`）。
 - 改了版本号想更新 exe「属性」里的版本：在 Linux/WSL 跑 `scripts/build.sh`（需要 `x86_64-w64-mingw32-windres`），提交新的 `.syso`。
 
-## 6. 绝对不能改动 / 必须遵守
+## 6. 本项目例外（和全局规则不同的地方）
+
+C 类：改了会影响使用者已有的设置或放文件的习惯，维持现状。
+
+- **设置文件是 `config/settings.ini`**，局域网开关是 `[server] lan = true/false`（不是 `config.ini` 的 `access = local / lan`）。继续支持旧版无 section 的 ini 与 `Teacher-TimeTable.ini` 迁移。
+- **输入文件夹是 `data/`，不是 `Result/`**（也继续支持课表放在 exe 旁边的旧放法）。如果以后要改：两个位置都读。
+
+### 暂未对齐（B 类，以后再做；不是例外，不要擅自改）
+
+- `.bat` 用 UTF-8 + 中文，开头 `chcp 65001 >nul`（全局要求纯 ASCII）。
+- exe 输出在 `dist/Teacher-TimeTable/`，全局要求输出到项目根目录。
+- 使用者实际用端口 5001，刚好是 5000 被占用时顺延的下一个，可能和 AAV 撞。
+
+## 7. 绝对不能改动 / 必须遵守
 
 1. **课表资料不可进 git**：`班级课表*.html`、`场地课表*.html`、`*_files/`、`data/`、`dist/`、`logs/` 含老师名字（`.gitignore` 已设定，不可移除）。测试样本必须匿名化。
-2. **exe 必须单一文件、免安装**：不可引入 Python、Node 或其他运行时依赖（使用者明确要求）。
-3. **统计规则不可擅改**：星期一至五、按时段计、排除项（见 §3）。要改先问使用者。
-4. **英文组对应必须用「时段集合完全相等」**，不可改成子集比对。
-5. **路由与 AppID 保持兼容**：`/__ping` 回传 `tjhs-timetable`、`/__cfg`、`/__quit`（只接受本机）——新旧版本 exe 靠它们互相辨认与接手。
-6. **设定档键名与位置保持兼容**：`config/settings.ini` 的 `lan`、`port`、`open_browser`、`keep_days`、`level`；默认端口 17380（使用者实际用 5001）；继续支持旧版无 section 的 ini 与 `Teacher-TimeTable.ini` 迁移。
-7. **运行时文件夹结构**固定为 exe + `config/ data/ logs/`；继续支持课表放在 exe 旁边（旧放法）。
-8. **版本号只来自 `VERSION`**，不在代码里写死。
-9. **`file://` 模式要能用**：直接双击 `web/index.html` 可选择文件（所以前端不用 ES modules、不依赖服务端才有的功能）。
-10. **界面一律简体中文**；首页不用下拉列表。
-11. **不要擅自删除使用者的文件**；需要删除时列出清单让使用者自己删。
-12. 不加第三方 Go 依赖、不加前端框架，除非使用者同意。
+2. **统计规则不可擅改**：星期一至五、按时段计、排除项（见 §3）。要改先问使用者。
+3. **英文组对应必须用「时段集合完全相等」**，不可改成子集比对。
+4. **路由与 AppID 保持兼容**：`/__ping` 回传 `tjhs-timetable`、`/__cfg`、`/__quit`（只接受本机）——新旧版本 exe 靠它们互相辨认与接手。
+5. **设定档键名与位置保持兼容**：`config/settings.ini` 的 `lan`、`port`、`open_browser`、`keep_days`、`level`；默认端口 17380。
+6. **运行时文件夹结构**固定为 exe + `config/ data/ logs/`。
+7. **`file://` 模式要能用**：直接双击 `web/index.html` 可选择文件（所以前端不用 ES modules、不依赖服务端才有的功能）。
+
+## 8. 待确认（不要自行定案；来自交接 §7，2026-10-17 核对后仍未解决）
+
+1. 同事通过局域网访问是否已经成功？（09-28 日志里的「同事 100.90.128.8」是本机 Pangolin 网卡自己的 IP）
+2. `build.bat`、`firewall-allow.bat` 在 Windows 实机上还没验证。
+3. 两个系统是否有同一位老师名字写法不同的情况？（目前只发现「云惟祥」完全相同）
+4. 老师视图是否需要显示星期六（目前只有联课活动）？
+5. `E1`–`E12` 判断为英文代号（数据比对 117/117 支持），但没有向使用者或教务处确认过正式定义。
+6. 英文组代号的含义（例如 B/H/P 开头、数字）未确认；目前只当作代号显示，不影响功能。
+7. 课表中 `6*` 的特殊安排以 `.print-tt__rmk-box` 的内容为准（J1–J3 先午餐、S1–S3 先上课），J/S 是否代表初中/高中未确认。
