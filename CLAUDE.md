@@ -171,10 +171,10 @@ C 类：改了会影响使用者已有的设置或放文件的习惯，维持现
 
 - **设置文件是 `config/settings.ini`**，局域网开关是 `[server] lan = true/false`（不是 `config.ini` 的 `access = local / lan`）。继续支持旧版无 section 的 ini 与 `Teacher-TimeTable.ini` 迁移。
 - **输入文件夹是 `data/`，不是 `Result/`**（也继续支持课表放在 exe 旁边的旧放法）。如果以后要改：两个位置都读。
+- **`scripts/firewall-allow.bat` 保留中文提示**（UTF-8 + `chcp 65001`，全局要求纯 ASCII）：它会复制到 exe 旁边，由老师 / 同事双击，提示要看得懂。维护者定（2026-10-23）。已知风险：cmd 在 `chcp 65001` 下偶尔把长命令后面的中文行读错（`'…' is not recognized`）；改这个文件时保持命令短、不用 `^` 续行，改完在 Windows 实机跑一次。`build.bat`、`scripts/build.bat` 已改成纯 ASCII（只有维护者用）。
 
 ### 暂未对齐（B 类，以后再做；不是例外，不要擅自改）
 
-- `.bat` 用 UTF-8 + 中文，开头 `chcp 65001 >nul`（全局要求纯 ASCII）。
 - exe 输出在 `dist/Teacher-TimeTable/`，全局要求输出到项目根目录。
 - 使用者实际用端口 5001，刚好是 5000 被占用时顺延的下一个，可能和 AAV 撞。
 
