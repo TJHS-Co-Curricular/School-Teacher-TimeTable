@@ -145,6 +145,7 @@ logs/     YYYY-MM-DD.log
 gofmt -w .
 go vet ./...
 GOOS=windows go vet ./...
+go test ./...             # internal/settings、internal/paths 的自动化测试（只用合成资料）
 npx prettier --write "web/**/*.{html,css,js}"
 
 # 打包（输出 dist/Teacher-TimeTable/，不会动到 config/ data/ logs/）
@@ -160,7 +161,7 @@ curl http://127.0.0.1:17380/__version
 curl http://127.0.0.1:17380/config.json
 ```
 
-- 测试：**目前没有自动化测试**。改动后至少手动验证：三个视图、英文合并（以 2026-09-26 的课表：老师 212 位、英文组 118 个全部对应、E1–E12 不出现）、改 settings.ini 重开会接手、F5 读到新课表。
+- 测试：`go test ./...` 只覆盖 `internal/settings`（ini 解析、旧版 ini 搬家、app.json）与 `internal/paths`；前端解析还没有自动化测试。改动后至少手动验证：三个视图、英文合并（以 2026-09-26 的课表：老师 212 位、英文组 118 个全部对应、E1–E12 不出现）、改 settings.ini 重开会接手、F5 读到新课表。
 - 发布：GitHub Release 上传 `dist/Teacher-TimeTable` 压缩档（压缩前清空 `data/`、`logs/`）。
 - 改了版本号想更新 exe「属性」里的版本：在 Linux/WSL 跑 `scripts/build.sh`（需要 `x86_64-w64-mingw32-windres`），提交新的 `.syso`。
 
