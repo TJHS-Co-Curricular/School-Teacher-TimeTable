@@ -149,7 +149,7 @@ go test ./...             # internal/settings、internal/paths 的自动化测�
 npx prettier --write "web/**/*.{html,css,js}"
 
 # 打包（输出 dist/Teacher-TimeTable/，不会动到 config/ data/ logs/）
-build.bat                 # Windows（没装 Go 会提示用 winget 安装；会先关闭运行中的 exe）
+build.bat                 # Windows（没装 Go 会提示用 winget 安装；会先关闭运行中的 exe；go vet 或 go test 失败就停止）
 sh scripts/build.sh       # Linux / WSL / macOS（有 windres 时会依 VERSION 重建 .syso）
 
 # 不打包直接运行（需要 data/ 里有课表）

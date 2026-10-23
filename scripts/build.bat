@@ -62,13 +62,19 @@ if not errorlevel 1 (
   echo [2/5] %EXE_NAME% is not running
 )
 
-rem ---------- 4. Check code ----------
+rem ---------- 4. Check code and run tests (stop if any fails) ----------
 pushd "%ROOT%"
-echo [3/5] Checking code...
+echo [3/5] Checking code and running tests...
 go vet ./...
 if errorlevel 1 (
   popd
   echo [ERROR] Code check failed. See the messages above.
+  goto :fail
+)
+go test ./...
+if errorlevel 1 (
+  popd
+  echo [ERROR] Tests failed. The exe was not built. See the messages above.
   goto :fail
 )
 
