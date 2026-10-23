@@ -7,9 +7,9 @@
   --bg: #f3f5f2;
   --surface: #ffffff;
   --surface-2: #e9ede8;
-  --ink: #17221d;
-  --ink-2: #4c5a53;
-  --ink-3: #7d8a83;
+  --text: #17221d;
+  --text-2: #4c5a53;
+  --muted: #7d8a83;
   --line: #d5dcd6;
   --accent: #1f5c47;
   --accent-ink: #ffffff;
@@ -19,7 +19,7 @@
   --cl: 92%; /* 科目色 亮度（底） */
   --cf: 28%; /* 科目色 亮度（字） */
   --shadow: 0 1px 2px rgba(23, 34, 29, 0.06), 0 4px 14px rgba(23, 34, 29, 0.05);
-  --r: 10px;
+  --radius: 10px;
   --font: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Hiragino Sans GB', system-ui, sans-serif;
   --mono: 'SF Mono', 'Cascadia Mono', Consolas, 'Roboto Mono', monospace;
   color-scheme: light;
@@ -29,9 +29,9 @@
     --bg: #111714;
     --surface: #18201c;
     --surface-2: #222c27;
-    --ink: #e6ede9;
-    --ink-2: #a9b7b0;
-    --ink-3: #74837b;
+    --text: #e6ede9;
+    --text-2: #a9b7b0;
+    --muted: #74837b;
     --line: #2d3832;
     --accent: #6cc3a0;
     --accent-ink: #0d1612;
@@ -48,9 +48,9 @@
   --bg: #111714;
   --surface: #18201c;
   --surface-2: #222c27;
-  --ink: #e6ede9;
-  --ink-2: #a9b7b0;
-  --ink-3: #74837b;
+  --text: #e6ede9;
+  --text-2: #a9b7b0;
+  --muted: #74837b;
   --line: #2d3832;
   --accent: #6cc3a0;
   --accent-ink: #0d1612;
@@ -72,7 +72,7 @@ body {
 }
 body {
   background: var(--bg);
-  color: var(--ink);
+  color: var(--text);
   font: 14px/1.5 var(--font);
   -webkit-font-smoothing: antialiased;
 }
@@ -120,7 +120,7 @@ button {
   letter-spacing: 0.04em;
 }
 .brand span {
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 12px;
 }
 .seg {
@@ -135,12 +135,12 @@ button {
   padding: 6px 16px;
   border-radius: 999px;
   cursor: pointer;
-  color: var(--ink-2);
+  color: var(--text-2);
   white-space: nowrap;
 }
 .seg button.on {
   background: var(--surface);
-  color: var(--ink);
+  color: var(--text);
   font-weight: 600;
   box-shadow: var(--shadow);
 }
@@ -152,7 +152,7 @@ button {
   max-width: 60vw;
   border: 1px solid var(--line);
   background: var(--bg);
-  color: var(--ink);
+  color: var(--text);
   border-radius: 999px;
   padding: 7px 14px 7px 32px;
   font: inherit;
@@ -162,7 +162,7 @@ button {
   left: 11px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--ink-3);
+  color: var(--muted);
 }
 
 main {
@@ -187,7 +187,7 @@ main {
 }
 .pagehead p {
   margin: 2px 0 0;
-  color: var(--ink-2);
+  color: var(--text-2);
 }
 .section {
   margin-top: 26px;
@@ -196,7 +196,7 @@ main {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: var(--ink-2);
+  color: var(--text-2);
   margin: 0 0 10px;
   display: flex;
   align-items: center;
@@ -204,7 +204,7 @@ main {
 }
 .section h2 .count {
   font-weight: 400;
-  color: var(--ink-3);
+  color: var(--muted);
   letter-spacing: 0;
 }
 .section h2::after {
@@ -228,7 +228,7 @@ main {
   text-align: left;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--r);
+  border-radius: var(--radius);
   padding: 12px 14px;
   cursor: pointer;
   transition:
@@ -247,7 +247,7 @@ main {
 .tcard .sj {
   grid-column: 1;
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -266,7 +266,7 @@ main {
 }
 .tcard .tot small {
   font-size: 10px;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .spark {
   display: flex;
@@ -291,7 +291,7 @@ main {
   text-align: left;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--r);
+  border-radius: var(--radius);
   padding: 12px 14px;
   cursor: pointer;
   transition:
@@ -308,13 +308,13 @@ main {
 }
 .ccard span {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 
 .empty {
   padding: 40px 0;
   text-align: center;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .btn {
   display: inline-flex;
@@ -369,7 +369,7 @@ main {
 .dhead .kind {
   font-size: 12px;
   letter-spacing: 0.1em;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .dhead h1 {
   margin: 2px 0 8px;
@@ -390,7 +390,7 @@ main {
 }
 .chip.plain {
   background: var(--surface-2);
-  color: var(--ink-2);
+  color: var(--text-2);
 }
 .week {
   display: flex;
@@ -424,7 +424,7 @@ main {
 }
 .week .d span {
   font-size: 11px;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .week .total {
   margin-left: 12px;
@@ -441,18 +441,18 @@ main {
 }
 .week .total span {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .meta {
   grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   gap: 6px 20px;
-  color: var(--ink-2);
+  color: var(--text-2);
   font-size: 13px;
 }
 .meta b {
-  color: var(--ink);
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -474,7 +474,7 @@ main {
 }
 .tt th {
   font-weight: 500;
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 11px;
   padding: 4px 2px 6px;
   vertical-align: bottom;
@@ -483,7 +483,7 @@ main {
   display: block;
   font-size: 15px;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text);
 }
 .tt th.day {
   width: 64px;
@@ -494,7 +494,7 @@ main {
 .tt th.day b {
   display: block;
   font-size: 15px;
-  color: var(--ink);
+  color: var(--text);
 }
 .tt th.gap,
 .tt td.gap {
@@ -544,7 +544,7 @@ main {
 }
 .tt td.on.act {
   background: var(--surface-2);
-  color: var(--ink-2);
+  color: var(--text-2);
 }
 .tt td.on.act .s {
   font-weight: 500;
@@ -559,11 +559,11 @@ main {
 }
 .tt tr.sat th.day b,
 .tt tr.sat th.day span {
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .note {
   margin: 10px 4px 0;
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 12px;
 }
 
@@ -586,7 +586,7 @@ main {
   justify-content: space-between;
 }
 .dayc h3 span {
-  color: var(--ink-3);
+  color: var(--muted);
   font-weight: 400;
   font-size: 12px;
 }
@@ -609,7 +609,7 @@ main {
 }
 .dayc li.act {
   background: var(--surface-2);
-  color: var(--ink-2);
+  color: var(--text-2);
 }
 .dayc li .p {
   font-weight: 700;
@@ -622,7 +622,7 @@ main {
   overflow-wrap: anywhere;
 }
 .dayc .none {
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 13px;
 }
 
@@ -648,7 +648,7 @@ main {
 }
 .prow .who small {
   display: block;
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 11px;
 }
 .prow b {
@@ -657,7 +657,7 @@ main {
 .prow b small {
   font-size: 11px;
   font-weight: 400;
-  color: var(--ink-3);
+  color: var(--muted);
   margin-left: 2px;
 }
 a.lnk,
@@ -697,7 +697,7 @@ table.sum th {
   text-align: left;
   font-weight: 600;
   font-size: 12px;
-  color: var(--ink-2);
+  color: var(--text-2);
   padding: 12px 10px;
   border-bottom: 1px solid var(--line);
   cursor: pointer;
@@ -754,11 +754,11 @@ table.sum td.tot {
   min-width: 24px;
 }
 table.sum td.sj {
-  color: var(--ink-2);
+  color: var(--text-2);
   font-size: 12px;
 }
 table.sum td.cl {
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 12px;
   max-width: 420px;
 }
@@ -766,7 +766,7 @@ table.sum tr.grp td {
   background: var(--bg);
   font-size: 12px;
   font-weight: 600;
-  color: var(--ink-2);
+  color: var(--text-2);
   letter-spacing: 0.06em;
 }
 .stats {
@@ -787,7 +787,7 @@ table.sum tr.grp td {
 }
 .stat span {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 
 /* 科目色相 */
@@ -846,7 +846,7 @@ table.sum tr.grp td {
   margin: 0 0 8px;
 }
 .load p {
-  color: var(--ink-2);
+  color: var(--text-2);
   margin: 0 0 16px;
 }
 .load .err {
@@ -882,7 +882,7 @@ table.sum tr.grp td {
 }
 .drop span {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--muted);
 }
 .spin {
   width: 28px;
@@ -913,11 +913,11 @@ table.sum tr.grp td {
   gap: 8px 20px;
   align-items: center;
   justify-content: space-between;
-  color: var(--ink-3);
+  color: var(--muted);
   font-size: 12px;
 }
 .foot-in b {
-  color: var(--ink-2);
+  color: var(--text-2);
   font-weight: 600;
 }
 .foot .ver {
@@ -929,7 +929,7 @@ table.sum tr.grp td {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--ink-2);
+  color: var(--text-2);
   text-decoration: none;
   border: 1px solid var(--line);
   border-radius: 999px;
